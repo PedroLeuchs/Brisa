@@ -30,28 +30,23 @@ Como o Access Secret anterior apareceu em uma conversa, gere um novo no Tuya
 Developer Platform e substitua-o diretamente no gerenciador de segredos da
 hospedagem antes de publicar. A rotação invalida a chave antiga.
 
-## Configuração pronta para Render
+## Requisito atualizado: custo zero
 
-O `render.yaml` cria uma única instância Starter com 1 GB de disco em `/app/data`.
-O custo de referência é US$ 7/mês pelo serviço e US$ 0,25/mês pelo disco, antes de
-impostos e excedentes. Consulte https://render.com/pricing antes de confirmar.
-Nenhum recurso foi contratado ou criado no Render. O plano Free não preserva o
-disco e suspende o processo, interrompendo coleta e agenda.
+A hospedagem deve ser gratuita. A configuração de contratação do Render foi
+retirada; nenhum serviço foi contratado. O container continua disponível para
+infraestrutura compatível já existente.
 
-Após autorizar a contratação, conecte o repositório em
-https://dashboard.render.com/select-repo?type=blueprint e revise os recursos.
-O formulário solicita os quatro valores secretos declarados com `sync: false`.
-Cole o novo Access Secret somente nesse formulário, nunca no GitHub ou no chat.
-Para criar a senha do painel, rode `python -m backend.tools.generate_password_hash`
-em um terminal privado e cole a linha gerada em `APP_PASSWORD_HASH`. A senha em
-si não é exibida nem gravada. Também é possível usar o hash doméstico existente.
+Para dispensar a Tuya Cloud, o agente em `remote/` precisa rodar na rede do ar.
+Com o PC desligado e sem outro aparelho disponível, a alternativa a investigar
+é o próprio roteador. É necessário identificar modelo e revisão de hardware
+antes de determinar se o firmware permite executar o agente ou uma ponte.
+Um servidor na internet não acessa diretamente o IP privado do ar; publicar
+somente a interface não resolve a comunicação.
 
-O Render fornece HTTPS e `RENDER_EXTERNAL_HOSTNAME`; o container usa esse hostname
-como `ALLOWED_HOSTS`. Para um domínio próprio, configure `ALLOWED_HOSTS` explicitamente.
-O container confia nos cabeçalhos do proxy da hospedagem e deve ser exposto apenas
-por esse proxy. Publicações automáticas estão desativadas no Blueprint.
+Cloudflare Workers e D1 oferecem planos gratuitos, mas exigem adaptar o backend,
+armazenamento e agenda. Isso resolve a hospedagem, não substitui a ponte doméstica
+necessária ao controle local. Ainda não há implantação desse transporte.
 
-Após o deploy, entre no Android e marque "Lembrar deste dispositivo". A sessão
-fica no SQLite persistente e dura até 30 dias. A validação de produção deve incluir
-fechar e reabrir o navegador, testar um comando combinado com o proprietário,
-e ler o estado com o PC doméstico desligado usando a internet móvel.
+Após uma implantação funcional, a validação deve incluir fechar e reabrir o
+navegador no Android, testar um comando combinado com o proprietário e ler o
+estado com o PC doméstico desligado usando a internet móvel.
