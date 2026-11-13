@@ -1,10 +1,14 @@
 # Brisa — controlador do ar-condicionado
 
-O backend agora aceita o transporte Tuya Cloud para uso em um servidor
-permanente. Consulte [implantação cloud](docs/CLOUD.md). A configuração padrão
-continua local e preserva o serviço doméstico existente.
+A opção atual para publicação gratuita é **Vercel + PC doméstico + Tailscale
+Funnel**. Consulte [o procedimento completo](docs/VERCEL.md). A interface fica na
+Vercel; controle LAN, agenda, sessões e histórico permanecem no PC, que precisa
+ficar ligado. O iniciador automático usa TinyTuya local, sem Tuya Cloud.
 
-Projeto em `C:\projects\ar`. Backend Python/TinyTuya e painel React/TypeScript responsivo, com manifest e service worker para uso como PWA. Nenhum comando usa a API cloud. O computador precisa permanecer ligado na rede do aparelho.
+O transporte Tuya Cloud também está disponível como alternativa opcional;
+consulte [implantação cloud](docs/CLOUD.md).
+
+Projeto em `C:\projects\ar`. Backend Python/TinyTuya e painel React/TypeScript responsivo, com manifest e service worker para uso como PWA. No transporte local, nenhum comando usa a API cloud. O computador precisa permanecer ligado na rede do aparelho.
 
 A prévia nova é servida em http://127.0.0.1:8080/ depois de `pnpm build` em frontend/. Consulte [instruções do frontend](frontend/README.md) e [contrato do backend](backend/README.md). O build já foi gerado neste computador. Em novas instalações, construa-o antes de iniciar; sem build, o painel anterior permanece disponível como fallback.
 

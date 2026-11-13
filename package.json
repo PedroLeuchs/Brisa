@@ -1,0 +1,11 @@
+{
+  "name": "brisa-hosting",
+  "private": true,
+  "type": "module",
+  "engines": {"node": "22.x"},
+  "packageManager": "pnpm@11.25.0",
+  "scripts": {
+    "build": "corepack pnpm --dir frontend build",
+    "test:proxy": "node --test hosting/vercel/proxy.test.mjs"
+  }
+}

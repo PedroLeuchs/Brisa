@@ -1,0 +1,16 @@
+.git
+.venv
+.env
+**/*.env
+data
+reports
+remote/runtime
+**/__pycache__
+**/.pytest_cache
+**/node_modules
+**/*.sqlite3*
+**/*.log
+**/*.key
+**/*.pem
+**/*.pfx
+frontend/dist

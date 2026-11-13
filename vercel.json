@@ -1,0 +1,23 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "corepack pnpm --dir frontend install --frozen-lockfile",
+  "buildCommand": "npm run build",
+  "outputDirectory": "frontend/dist",
+  "functions": {"api/proxy.mjs": {"maxDuration": 30}},
+  "rewrites": [
+    {"source": "/api/:route*", "destination": "/api/proxy?route=:route*"},
+    {"source": "/ui/:asset*", "destination": "/:asset*"}
+  ],
+  "headers": [
+    {"source": "/(.*)", "headers": [
+      {"key": "X-Content-Type-Options", "value": "nosniff"},
+      {"key": "Referrer-Policy", "value": "no-referrer"},
+      {"key": "X-Frame-Options", "value": "DENY"},
+      {"key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"}
+    ]},
+    {"source": "/api/:route*", "headers": [{"key": "Cache-Control", "value": "private, no-store"}]},
+    {"source": "/sw.js", "headers": [{"key": "Cache-Control", "value": "no-cache"}]},
+    {"source": "/", "headers": [{"key": "Cache-Control", "value": "no-cache"}]}
+  ]
+}

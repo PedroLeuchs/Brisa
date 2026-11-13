@@ -49,10 +49,20 @@ def stop_automations():
 
 @app.middleware('http')
 async def protect(request: Request, call_next):
+    proxy_token = os.getenv('BRISA_PROXY_TOKEN', '')
+    proxied = False
+    if request.url.path.startswith('/api/') and proxy_token:
+        if len(proxy_token) < 32:
+            return JSONResponse({'detail': 'Configuração do acesso remoto incompleta.'}, status_code=503)
+        supplied = request.headers.get('x-brisa-proxy-token', '')
+        if not hmac.compare_digest(supplied.encode(), proxy_token.encode()):
+            return JSONResponse({'detail': 'Acesso somente pelo painel remoto.'}, status_code=403)
+        proxied = True
     if request.method not in ('GET', 'HEAD'):
         origin = request.headers.get('origin')
         expected = f'{request.url.scheme}://{request.headers.get("host", "")}'
-        if origin != expected or request.headers.get('x-ar-request') != '1':
+        # O proxy autentica a origem pública antes de anexar o segredo do servidor.
+        if (not proxied and origin != expected) or request.headers.get('x-ar-request') != '1':
             return JSONResponse({'detail': 'Origem inválida.'}, status_code=403)
         length = request.headers.get('content-length', '0')
         if not length.isdigit() or int(length) > 4096:

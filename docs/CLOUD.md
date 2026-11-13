@@ -1,5 +1,9 @@
 # Brisa com Tuya Cloud
 
+**Alternativa opcional.** O caminho atual escolhido permite manter o PC ligado
+e publica a interface gratuitamente na Vercel, sem Tuya Cloud. Consulte
+[VERCEL.md](VERCEL.md). As notas abaixo registram a alternativa investigada.
+
 O transporte cloud usa o mesmo contrato de aparelho do backend doméstico. A API,
 interface, rotinas e cálculo de consumo continuam no FastAPI. A leitura de estado
 e a lista de funções foram validadas na região Western America em 13/11/2026:

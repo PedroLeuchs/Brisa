@@ -30,6 +30,27 @@ def test_auth_required(client):
     assert client.get('/api/status').status_code == 401
     assert client.post('/api/command', json={'code': 'switch', 'value': True}, headers=HEADERS).status_code == 401
 
+def test_vercel_proxy_gate_requires_secret_and_preserves_user_login(client, monkeypatch):
+    secret = 'test-only-proxy-token-' * 3
+    monkeypatch.setenv('BRISA_PROXY_TOKEN', secret)
+    assert client.get('/api/session').status_code == 403
+    assert client.post('/api/login', json={'password': 'test-password-123'}, headers=HEADERS).status_code == 403
+    proxy = {'X-Brisa-Proxy-Token': secret, 'X-Ar-Request': '1'}
+    assert client.get('/api/session', headers=proxy).status_code == 401
+    # Only the authenticated BFF rebases browser-origin handling. It still needs X-Ar-Request.
+    assert client.post('/api/login', json={'password':'test-password-123'}, headers={'X-Brisa-Proxy-Token': secret}).status_code == 403
+    response = client.post('/api/login', json={'password':'test-password-123', 'remember':True}, headers=proxy)
+    assert response.status_code == 200
+    assert 'Max-Age=2592000' in response.headers['set-cookie']
+    assert client.get('/api/session', headers=proxy).status_code == 200
+    assert client.get('/api/session').status_code == 403
+    assert client.post('/api/logout', json={}, headers=proxy).status_code == 200
+    assert client.get('/api/session', headers=proxy).status_code == 401
+
+def test_vercel_proxy_short_secret_fails_closed(client, monkeypatch):
+    monkeypatch.setenv('BRISA_PROXY_TOKEN', 'too-short')
+    assert client.get('/api/session', headers={'X-Brisa-Proxy-Token':'too-short'}).status_code == 503
+
 def test_remembered_session_survives_reload_restart_and_logout_revokes_cookie(client, monkeypatch):
     from backend.services.sessions import SessionStore
     response = client.post('/api/login', json={'password':'test-password-123','remember':True}, headers=HEADERS)

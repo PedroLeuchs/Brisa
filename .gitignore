@@ -19,3 +19,5 @@ data/sessions.sqlite3*
 data/consumption.sqlite3*
 data/mobile-tls/
 remote/runtime/
+data/vercel-proxy.token
+data/tailscale-before-funnel.json
