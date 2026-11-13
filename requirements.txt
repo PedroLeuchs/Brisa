@@ -1,0 +1,6 @@
+tinytuya==1.20.0
+tzdata>=2025.2
+fastapi==0.162.0
+uvicorn==0.54.0
+python-dotenv==1.2.4
+cryptography>=41

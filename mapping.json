@@ -1,0 +1,11 @@
+{
+  "switch": 1,
+  "temp_set": 2,
+  "mode": 4,
+  "fan_speed_enum": 5,
+  "mode_eco": null,
+  "cleaning": 27,
+  "sleep": 25,
+  "switch_vertical": 30,
+  "switch_horizontal": 33
+}
