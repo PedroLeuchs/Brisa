@@ -1,4 +1,5 @@
 .env
+.git
 **/*.env
 .venv
 frontend/node_modules

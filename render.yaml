@@ -1,0 +1,30 @@
+# Paid resources: about USD 7.25/month before taxes/overages.
+# Creating this Blueprint requires the owner's billing authorization.
+services:
+  - type: web
+    name: brisa
+    runtime: docker
+    plan: starter
+    region: oregon
+    numInstances: 1
+    autoDeployTrigger: "off"
+    healthCheckPath: /
+    disk:
+      name: brisa-data
+      mountPath: /app/data
+      sizeGB: 1
+    envVars:
+      - key: TUYA_TRANSPORT
+        value: cloud
+      - key: TUYA_CLOUD_REGION
+        value: us
+      - key: COOKIE_SECURE
+        value: "true"
+      - key: TUYA_ACCESS_ID
+        sync: false
+      - key: TUYA_ACCESS_SECRET
+        sync: false
+      - key: TUYA_DEVICE_ID
+        sync: false
+      - key: APP_PASSWORD_HASH
+        sync: false
